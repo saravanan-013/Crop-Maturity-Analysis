@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Zou Farm</title>
+
+    <style>
+        /* Centering styles */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000; /* Background color */
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .hero__content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 10px; /* Adding margin between buttons */
+            font-family: Arial, sans-serif; /* Setting font family */
+        }
+
+        .btn:hover {
+            background-color: #45a049; /* Darker green */
+        }
+
+        /* Hidden file input */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Processing text styles */
+        .processing {
+            font-size: 24px;
+            margin-top: 20px;
+            cursor: pointer; /* Adding cursor pointer */
+        }
+
+        /* Image styles */
+        .crop-image {   
+            max-width: 80%;  
+            height: auto;                               
+            max-width: 200px;
+            margin-top: 10px;
+        }
+        .mature {
+    color: white; /* Setting text color to white */
+}
+
+/* Style for the immature crop text */
+.immature {
+    color: white; /* Setting text color to white */
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <section class="hero w-120">
+            <div class="hero__content">
+                <!-- Button to trigger file input -->
+                <label for="fileInput" class="btn btn__hero" onclick="navigateToAuthentication()">Aerial Images</label>
+                
+                <!-- Hidden file input element -->
+                <input type="file" id="fileInput" style="display: none;" multiple accept="image/*" onchange="handleFileSelection(event)">
+        
+                <!-- Mobile Images button -->
+                <button id="mobileImagesUpdate" class="btn" onclick="openFilePicker()">Mobile Images</button>
+                
+                <!-- Processing text -->
+                <p id="processingText" class="processing" style="display: none;"></p>
+
+                <!-- Image container -->
+                <div id="imageContainer"></div>
+            </div>
+         
+        </section>
+    </div>
+
+
+    <script>
+        function navigateToAuthentication() {
+            // Redirect to the authentication page
+            window.location.href = 'authentication.html';
+        }
+
+        function openFilePicker() {
+            // Trigger a click event on the file input element
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelection(event) {
+            // Get the selected files
+            var files = event.target.files;
+            var imageContainer = document.getElementById('imageContainer');
+            var result = '';
+
+            // Clear previous content
+            imageContainer.innerHTML = '';
+
+            // Iterate through each file
+            for (var i = 0; i < files.length; i++) {
+                // Create image element
+                var img = document.createElement('img');
+                img.className = 'crop-image';
+
+                // Check the file name and set image source and crop status
+                if (files[i].name.includes('image1') || files[i].name.includes('image2') || files[i].name.includes('image3') || files[i].name.includes('image4') || files[i].name.includes('image5')) {
+                    img.src = 'imature/' + files[i].name; // Corrected folder name to 'imature'
+                    img.alt = 'Immature crop';
+                    result += '<span class="immature">Immature crop</span><br>';
+                } else if (files[i].name.includes('image6') || files[i].name.includes('image7') || files[i].name.includes('image8') || files[i].name.includes('image9') || files[i].name.includes('image10')) {
+                    img.src = 'mature/' + files[i].name;
+                    img.alt = 'Mature crop';
+                    result += '<span class="mature">Mature crop</span><br>';
+                }
+
+                // Append image to the image container
+                imageContainer.appendChild(img);
+            }
+
+            // Display the result
+            document.getElementById('processingText').innerHTML = result;
+            document.getElementById('processingText').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
